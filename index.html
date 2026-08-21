@@ -34,7 +34,7 @@ button{width:100%;padding:16px;margin-top:10px;border:0;border-radius:16px;backg
 <script>
 const C=document.getElementById("game"),ctx=C.getContext("2d"),$=id=>document.getElementById(id);
 let W,H,D=Math.min(2,devicePixelRatio||1);function resize(){W=innerWidth;H=innerHeight;C.width=W*D;C.height=H*D;ctx.setTransform(D,0,0,D,0,0)}addEventListener("resize",resize,{passive:true});resize();
-const imgs={};["hero","alien","spider","tree","crystal","house","bush","rock","grass","forest","field","road","water"].forEach(n=>{const i=new Image();i.src="assets/"+n+".png";imgs[n]=i});
+const imgs={};["hero","alien","spider","tree","crystal","house","bush","rock","grass","forest","field","road","water"].forEach(n=>{const i=new Image();i.src=n+".png";imgs[n]=i});
 const world={w:2400,h:1700},cam={x:0,y:0};
 const zones=[{name:"Prairie",x:0,y:0,w:1000,h:820,type:"grass",stress:0},{name:"Forêt",x:960,y:0,w:760,h:820,type:"forest",stress:0},{name:"Village",x:1700,y:0,w:700,h:820,type:"village",stress:0},{name:"Champ",x:0,y:820,w:1000,h:880,type:"field",stress:0},{name:"Bocage",x:960,y:820,w:760,h:880,type:"forest",stress:0},{name:"Rivière",x:1700,y:820,w:700,h:880,type:"water",stress:0}];
 let player,enemies=[],bullets=[],running=false,last=0,t=0,shotT=0,wave=0,state="calm",waveTimer=8,toSpawn=0,spawnT=0;
