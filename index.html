@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Neon Wilds</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071018;color:#fff;font-family:Arial,sans-serif;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+#start,#levelup,#gameover{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,8,14,.86);z-index:5;padding:24px}
+.card{width:min(92vw,420px);background:#101a25;border:1px solid #294056;border-radius:22px;padding:24px;text-align:center;box-shadow:0 20px 60px #0008}
+h1{margin:0 0 8px;font-size:36px} p{color:#b8c7d6;line-height:1.45}
+button{width:100%;padding:16px;border:0;border-radius:16px;background:#38f3b0;color:#042116;font-size:18px;font-weight:800;margin-top:12px}
+.choice{background:#172536;color:#fff;text-align:left}
+#hud{position:fixed;top:env(safe-area-inset-top);left:0;right:0;padding:12px 14px;z-index:2;pointer-events:none}
+.bar{height:10px;background:#233240;border-radius:99px;overflow:hidden;margin-top:5px}
+.fill{height:100%;background:#38f3b0;width:100%}
+#xp .fill{background:#50a8ff}
+#stats{display:flex;justify-content:space-between;font-weight:700;font-size:14px;text-shadow:0 2px 4px #000}
+#joystick{position:fixed;left:20px;bottom:calc(24px + env(safe-area-inset-bottom));width:120px;height:120px;border-radius:50%;background:#ffffff14;border:1px solid #ffffff2b;z-index:3}
+#stick{position:absolute;left:35px;top:35px;width:50px;height:50px;border-radius:50%;background:#ffffff88}
+#pulse{position:fixed;right:24px;bottom:calc(30px + env(safe-area-inset-bottom));width:78px;height:78px;border-radius:50%;background:#683cff;border:2px solid #b6a2ff;color:#fff;font-size:28px;z-index:3;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 0 30px #683cff88}
+#hint{position:fixed;bottom:calc(160px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:12px;color:#c9d5df99;z-index:2;white-space:nowrap}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<div id="hud" class="hidden">
+  <div id="stats"><span id="time">00:00</span><span id="level">Niv. 1</span></div>
+  <div class="bar"><div id="hpFill" class="fill"></div></div>
+  <div id="xp" class="bar"><div id="xpFill" class="fill"></div></div>
+</div>
+
+<div id="joystick" class="hidden"><div id="stick"></div></div>
+<div id="pulse" class="hidden">✦</div>
+<div id="hint" class="hidden">Déplace-toi • les tirs sont automatiques</div>
+
+<div id="start">
+  <div class="card">
+    <h1>NEON WILDS</h1>
+    <p>Survis dans un monde vivant. Plus tu exploites une zone, plus elle se corrompt et devient dangereuse.</p>
+    <button id="startBtn">Lancer l’expédition</button>
+  </div>
+</div>
+
+<div id="levelup" class="hidden">
+  <div class="card">
+    <h2>Mutation</h2>
+    <p>Choisis une évolution.</p>
+    <div id="choices"></div>
+  </div>
+</div>
+
+<div id="gameover" class="hidden">
+  <div class="card">
+    <h2>Expédition terminée</h2>
+    <p id="score"></p>
+    <button onclick="location.reload()">Recommencer</button>
+  </div>
+</div>
+
+<script>
+const c=document.getElementById("game"),x=c.getContext("2d");
+let W,H,D=Math.min(2,devicePixelRatio||1);
+function resize(){W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;x.setTransform(D,0,0,D,0,0)}
+addEventListener("resize",resize);resize();
+
+let running=false,last=0,t=0,spawnT=0,shotT=0,bossT=0;
+let enemies=[],bullets=[],orbs=[],particles=[];
+let joy={x:0,y:0,id:null};
+let player;
+
+function reset(){
+ player={x:W/2,y:H/2,r:14,hp:100,maxHp:100,speed:190,damage:16,fire:0.48,bulletSpeed:430,level:1,xp:0,next:22,crit:.08,regen:0,orbits:0,pulseCd:0};
+ enemies=[];bullets=[];orbs=[];particles=[];t=0;spawnT=0;shotT=0;bossT=0;
+}
+
+function rand(a,b){return a+Math.random()*(b-a)}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+
+function spawnEnemy(type){
+ let edge=Math.floor(Math.random()*4),ex,ey;
+ if(edge===0){ex=-30;ey=rand(0,H)}
+ if(edge===1){ex=W+30;ey=rand(0,H)}
+ if(edge===2){ex=rand(0,W);ey=-30}
+ if(edge===3){ex=rand(0,W);ey=H+30}
+ let e={x:ex,y:ey,r:12,hp:28+t*.35,speed:45+t*.25,damage:12,kind:type||"walker",phase:rand(0,6.28)};
+ if(e.kind==="fast"){e.r=9;e.speed*=1.8;e.hp*=.65}
+ if(e.kind==="tank"){e.r=19;e.speed*=.58;e.hp*=3.2;e.damage=20}
+ if(e.kind==="boss"){e.r=38;e.speed=40+t*.08;e.hp=600+t*10;e.damage=28}
+ enemies.push(e);
+}
+
+function shoot(){
+ if(!enemies.length)return;
+ let target=enemies.reduce((a,b)=>dist(player,b)<dist(player,a)?b:a,enemies[0]);
+ let dx=target.x-player.x,dy=target.y-player.y,d=Math.hypot(dx,dy)||1;
+ let crit=Math.random()<player.crit;
+ bullets.push({x:player.x,y:player.y,vx:dx/d*player.bulletSpeed,vy:dy/d*player.bulletSpeed,r:5,damage:player.damage*(crit?2:1),crit});
+}
+
+function gainXP(v){
+ player.xp+=v;
+ if(player.xp>=player.next){
+  player.xp-=player.next;player.level++;player.next=Math.floor(player.next*1.32+8);showLevel();
+ }
+}
+
+const upgrades=[
+ ["Cadence neuro-électrique","Tirs 18% plus rapides",p=>p.fire*=.82],
+ ["Mutation musculaire","Dégâts +30%",p=>p.damage*=1.3],
+ ["Carapace adaptative","+25 PV max et soin",p=>{p.maxHp+=25;p.hp=Math.min(p.maxHp,p.hp+25)}],
+ ["Propulsion synaptique","Vitesse +18%",p=>p.speed*=1.18],
+ ["Instinct prédateur","Critiques +10%",p=>p.crit+=.10],
+ ["Spores orbitales","Ajoute une spore protectrice",p=>p.orbits++],
+ ["Régénération cellulaire","Régénère lentement",p=>p.regen+=1.1]
+];
+
+function showLevel(){
+ running=false;
+ let wrap=document.getElementById("choices");wrap.innerHTML="";
+ let opts=[...upgrades].sort(()=>Math.random()-.5).slice(0,3);
+ opts.forEach(u=>{
+  let b=document.createElement("button");b.className="choice";b.innerHTML="<b>"+u[0]+"</b><br><small>"+u[1]+"</small>";
+  b.onclick=()=>{u[2](player);document.getElementById("levelup").classList.add("hidden");running=true;last=performance.now()};
+  wrap.appendChild(b);
+ });
+ document.getElementById("levelup").classList.remove("hidden");
+}
+
+function pulse(){
+ if(!running||player.pulseCd>0)return;
+ player.pulseCd=6;
+ enemies.forEach(e=>{
+  let d=dist(player,e);
+  if(d<170){e.hp-=55;e.x+=(e.x-player.x)/(d||1)*70;e.y+=(e.y-player.y)/(d||1)*70}
+ });
+ for(let i=0;i<28;i++)particles.push({x:player.x,y:player.y,a:rand(0,6.28),life:.5});
+}
+
+document.getElementById("pulse").addEventListener("pointerdown",e=>{e.preventDefault();pulse()});
+
+const js=document.getElementById("joystick"),st=document.getElementById("stick");
+js.addEventListener("pointerdown",e=>{joy.id=e.pointerId;js.setPointerCapture(e.pointerId);moveJoy(e)});
+js.addEventListener("pointermove",e=>{if(e.pointerId===joy.id)moveJoy(e)});
+js.addEventListener("pointerup",e=>{if(e.pointerId===joy.id){joy={x:0,y:0,id:null};st.style.transform="translate(0,0)"}});
+
+function moveJoy(e){
+ let r=js.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+ let dx=e.clientX-cx,dy=e.clientY-cy,d=Math.hypot(dx,dy),m=Math.min(35,d);
+ joy.x=d?dx/d:0;joy.y=d?dy/d:0;
+ st.style.transform=`translate(${joy.x*m}px,${joy.y*m}px)`;
+}
+
+function biome(){
+ let heat=Math.min(1,t/120);
+ let g=x.createRadialGradient(W*.5,H*.5,40,W*.5,H*.5,Math.max(W,H));
+ g.addColorStop(0,`rgba(${10+90*heat},${35+20*(1-heat)},${50+30*(1-heat)},1)`);
+ g.addColorStop(1,"#05080d");
+ x.fillStyle=g;x.fillRect(0,0,W,H);
+ for(let i=0;i<20;i++){
+  let px=(i*137+t*9)%W,py=(i*83+t*5)%H;
+  x.fillStyle=i%3?"#29ffc818":"#ff3b8f18";
+  x.beginPath();x.arc(px,py,40+(i%5)*12,0,7);x.fill();
+ }
+}
+
+function update(dt){
+ t+=dt;spawnT-=dt;shotT-=dt;bossT-=dt;player.pulseCd=Math.max(0,player.pulseCd-dt);
+ if(player.regen)player.hp=Math.min(player.maxHp,player.hp+player.regen*dt);
+
+ player.x+=joy.x*player.speed*dt;player.y+=joy.y*player.speed*dt;
+ player.x=Math.max(player.r,Math.min(W-player.r,player.x));player.y=Math.max(70,Math.min(H-player.r,player.y));
+
+ if(spawnT<=0){
+  let kind=Math.random()<.15?"fast":Math.random()<.09?"tank":"walker";
+  spawnEnemy(kind);spawnT=Math.max(.18,.9-t*.006);
+ }
+ if(t>35&&bossT<=0){spawnEnemy("boss");bossT=45}
+ if(shotT<=0){shoot();shotT=player.fire}
+
+ bullets.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
+ bullets=bullets.filter(b=>b.x>-30&&b.x<W+30&&b.y>-30&&b.y<H+30);
+
+ enemies.forEach(e=>{
+  let dx=player.x-e.x,dy=player.y-e.y,d=Math.hypot(dx,dy)||1;
+  e.x+=dx/d*e.speed*dt;e.y+=dy/d*e.speed*dt;
+  if(d<player.r+e.r){player.hp-=e.damage*dt;e.x-=dx/d*35*dt;e.y-=dy/d*35*dt}
+ });
+
+ bullets.forEach(b=>enemies.forEach(e=>{
+  if(e.hp>0&&Math.hypot(b.x-e.x,b.y-e.y)<b.r+e.r){
+   e.hp-=b.damage;b.x=-9999;
+   for(let i=0;i<4;i++)particles.push({x:e.x,y:e.y,a:rand(0,6.28),life:.25});
+  }
+ }));
+
+ for(let i=0;i<player.orbits;i++){
+  let a=t*2.5+i*Math.PI*2/player.orbits;
+  let ox=player.x+Math.cos(a)*48,oy=player.y+Math.sin(a)*48;
+  orbs[i]={x:ox,y:oy};
+  enemies.forEach(e=>{if(Math.hypot(ox-e.x,oy-e.y)<e.r+8)e.hp-=24*dt});
+ }
+
+ enemies.forEach(e=>{if(e.hp<=0)gainXP(e.kind==="boss"?25:e.kind==="tank"?5:2)});
+ enemies=enemies.filter(e=>e.hp>0);
+
+ particles.forEach(p=>p.life-=dt);
+ particles=particles.filter(p=>p.life>0);
+
+ if(player.hp<=0){running=false;document.getElementById("gameover").classList.remove("hidden");document.getElementById("score").textContent=`Survie : ${Math.floor(t)} s • Niveau ${player.level}`}
+
+ document.getElementById("hpFill").style.width=(player.hp/player.maxHp*100)+"%";
+ document.getElementById("xpFill").style.width=(player.xp/player.next*100)+"%";
+ document.getElementById("level").textContent="Niv. "+player.level;
+ document.getElementById("time").textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(Math.floor(t%60)).padStart(2,"0");
+ document.getElementById("pulse").style.opacity=player.pulseCd>0?.45:1;
+}
+
+function draw(){
+ biome();
+
+ enemies.forEach(e=>{
+  x.fillStyle=e.kind==="boss"?"#ff477e":e.kind==="tank"?"#ffaf45":e.kind==="fast"?"#52d7ff":"#72ff9d";
+  x.beginPath();x.arc(e.x,e.y,e.r,0,7);x.fill();
+ });
+
+ bullets.forEach(b=>{
+  x.fillStyle=b.crit?"#fff07a":"#ffffff";x.beginPath();x.arc(b.x,b.y,b.r,0,7);x.fill();
+ });
+
+ orbs.forEach(o=>{if(o){x.fillStyle="#ad6cff";x.beginPath();x.arc(o.x,o.y,8,0,7);x.fill()}});
+
+ particles.forEach(p=>{
+  x.globalAlpha=p.life*2;x.fillStyle="#fff";x.fillRect(p.x+Math.cos(p.a)*(1-p.life)*30,p.y+Math.sin(p.a)*(1-p.life)*30,3,3);x.globalAlpha=1;
+ });
+
+ x.fillStyle="#38f3b0";
+ x.beginPath();x.arc(player.x,player.y,player.r,0,7);x.fill();
+ x.strokeStyle="#bfffee";x.lineWidth=3;x.stroke();
+}
+
+function loop(now){
+ let dt=Math.min(.033,(now-last)/1000||0);last=now;
+ if(running)update(dt);
+ if(player)draw();
+ requestAnimationFrame(loop);
+}
+
+document.getElementById("startBtn").onclick=()=>{
+ reset();running=true;last=performance.now();
+ document.getElementById("start").classList.add("hidden");
+ document.getElementById("hud").classList.remove("hidden");
+ document.getElementById("joystick").classList.remove("hidden");
+ document.getElementById("pulse").classList.remove("hidden");
+ document.getElementById("hint").classList.remove("hidden");
+};
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
