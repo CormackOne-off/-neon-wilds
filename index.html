@@ -4,1081 +4,3313 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#385a32">
-<title>Neon Wilds V2 — Terre Vivante</title>
+<meta name="theme-color" content="#35543a">
+
+<title>Neon Wilds V3</title>
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#476b3a;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;touch-action:none}
-canvas{display:block;width:100%;height:100%}
-.hidden{display:none!important}
-#hud{position:fixed;z-index:5;top:env(safe-area-inset-top);left:0;right:0;padding:10px 14px;pointer-events:none}
-#row{display:flex;justify-content:space-between;font-weight:800;font-size:14px;text-shadow:0 2px 4px #000}
-.bar{height:9px;margin-top:6px;background:#ffffff26;border-radius:999px;overflow:hidden;box-shadow:inset 0 0 0 1px #0003}
-.fill{height:100%;width:100%}.hp{background:#6cdb70}.xp{background:#f1cb63}
-#zone{display:inline-block;margin-top:7px;padding:5px 9px;border-radius:999px;background:#132319d9;border:1px solid #ffffff20;font-size:12px}
-#start,#levelup,#gameover{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:22px;background:#142018d9;backdrop-filter:blur(5px)}
-.card{width:min(92vw,430px);padding:24px;border-radius:24px;background:linear-gradient(#1b3022,#0f1d15);border:1px solid #ffffff1c;box-shadow:0 24px 80px #0009;text-align:center}
-h1{margin:0;font-size:34px}.sub{margin:6px 0 14px;color:#eddc91;font-weight:800}
-p{color:#c7d2ca;line-height:1.45}
-button{appearance:none;width:100%;margin-top:10px;padding:15px 16px;border:0;border-radius:16px;background:#78d46e;color:#0d1b10;font-size:17px;font-weight:900}
-.choice{background:#21382a;color:#fff;text-align:left;border:1px solid #ffffff17}
-.choice small{color:#bbc8be}
-#joy{position:fixed;z-index:8;left:20px;bottom:calc(22px + env(safe-area-inset-bottom));width:124px;height:124px;border-radius:50%;background:#0b160f3d;border:2px solid #ffffff38;box-shadow:0 8px 26px #0004}
-#stick{position:absolute;left:36px;top:36px;width:48px;height:48px;border-radius:50%;background:#ffffffbd;box-shadow:0 4px 12px #0005}
-#pulse{position:fixed;z-index:8;right:24px;bottom:calc(30px + env(safe-area-inset-bottom));width:80px;height:80px;border-radius:50%;background:#d79c48;border:3px solid #ffe3a2;color:#2c1807;font-size:26px;font-weight:1000;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px #0005}
-#tip{position:fixed;z-index:6;left:50%;bottom:calc(160px + env(safe-area-inset-bottom));transform:translateX(-50%);white-space:nowrap;background:#132319c9;padding:6px 10px;border-radius:999px;font-size:12px;color:#fff9}
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#304d34;
+    color:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    touch-action:none;
+}
+
+canvas{
+    display:block;
+    width:100%;
+    height:100%;
+}
+
+.hidden{
+    display:none!important;
+}
+
+#hud{
+    position:fixed;
+    z-index:5;
+    top:env(safe-area-inset-top);
+    left:0;
+    right:0;
+    padding:10px 16px;
+    pointer-events:none;
+}
+
+#row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:800;
+    font-size:15px;
+    text-shadow:0 2px 5px #000;
+}
+
+.bar{
+    height:10px;
+    margin-top:6px;
+    background:#ffffff24;
+    border-radius:99px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    width:100%;
+}
+
+.hp{background:#73da75;}
+.xp{background:#efc963;}
+
+#meta{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+    flex-wrap:wrap;
+}
+
+.pill{
+    padding:5px 9px;
+    border-radius:999px;
+    background:#132319d9;
+    border:1px solid #ffffff1f;
+    font-size:12px;
+}
+
+#start,
+#levelup,
+#gameover{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:#122019dd;
+    backdrop-filter:blur(6px);
+}
+
+.card{
+    width:min(92vw,470px);
+    padding:26px;
+    border-radius:26px;
+    background:linear-gradient(#1d3324,#101c15);
+    border:1px solid #ffffff1c;
+    box-shadow:0 24px 90px #0009;
+    text-align:center;
+}
+
+h1{
+    margin:0;
+    font-size:36px;
+}
+
+.sub{
+    margin:6px 0 14px;
+    color:#f1df9c;
+    font-weight:800;
+}
+
+p{
+    color:#c9d4cc;
+    line-height:1.45;
+}
+
+button{
+    appearance:none;
+    width:100%;
+    margin-top:10px;
+    padding:16px;
+    border:0;
+    border-radius:17px;
+    background:#7bd571;
+    color:#102114;
+    font-size:17px;
+    font-weight:900;
+}
+
+.choice{
+    background:#223a2b;
+    color:#fff;
+    text-align:left;
+    border:1px solid #ffffff18;
+}
+
+.choice small{
+    color:#bec9c1;
+}
+
+#joy{
+    position:fixed;
+    z-index:8;
+    left:24px;
+    bottom:calc(26px + env(safe-area-inset-bottom));
+    width:136px;
+    height:136px;
+    border-radius:50%;
+    background:#0b160f46;
+    border:2px solid #ffffff3d;
+}
+
+#stick{
+    position:absolute;
+    left:40px;
+    top:40px;
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:#ffffffc4;
+}
+
+#pulse{
+    position:fixed;
+    z-index:8;
+    right:28px;
+    bottom:calc(35px + env(safe-area-inset-bottom));
+    width:86px;
+    height:86px;
+    border-radius:50%;
+    background:#c9863f;
+    border:3px solid #ffe2a0;
+    color:#281608;
+    font-size:28px;
+    font-weight:1000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#tip{
+    position:fixed;
+    z-index:6;
+    left:50%;
+    bottom:calc(170px + env(safe-area-inset-bottom));
+    transform:translateX(-50%);
+    white-space:nowrap;
+    background:#14251bd8;
+    padding:7px 11px;
+    border-radius:999px;
+    font-size:12px;
+    color:#fff9;
+}
+
+#waveBanner{
+    position:fixed;
+    z-index:12;
+    left:50%;
+    top:18%;
+    transform:translate(-50%,-50%) scale(.9);
+    padding:12px 18px;
+    border-radius:16px;
+    background:#111d17e8;
+    border:1px solid #ffffff1f;
+    font-weight:900;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+}
+
+#waveBanner.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+}
 </style>
 </head>
+
 <body>
 
 <canvas id="game"></canvas>
 
 <div id="hud" class="hidden">
-  <div id="row"><span id="time">00:00</span><span id="level">Niv. 1</span></div>
-  <div class="bar"><div id="hpFill" class="fill hp"></div></div>
-  <div class="bar"><div id="xpFill" class="fill xp"></div></div>
-  <div id="zone">Prairie intacte</div>
+
+    <div id="row">
+        <span id="time">00:00</span>
+        <span id="level">Niv. 1</span>
+    </div>
+
+    <div class="bar">
+        <div id="hpFill" class="fill hp"></div>
+    </div>
+
+    <div class="bar">
+        <div id="xpFill" class="fill xp"></div>
+    </div>
+
+    <div id="meta">
+        <div id="zone" class="pill">Prairie intacte</div>
+        <div id="wave" class="pill">Exploration</div>
+    </div>
+
 </div>
 
-<div id="joy" class="hidden"><div id="stick"></div></div>
+<div id="joy" class="hidden">
+    <div id="stick"></div>
+</div>
+
 <div id="pulse" class="hidden">⚡</div>
-<div id="tip" class="hidden">Explore : rester trop longtemps dans une zone la dégrade</div>
+
+<div id="tip" class="hidden">
+    Explore le monde · les attaques arrivent par vagues
+</div>
+
+<div id="waveBanner"></div>
 
 <div id="start">
-  <div class="card">
-    <h1>NEON WILDS</h1>
-    <div class="sub">V2 · Terre vivante</div>
-    <p>Tu incarnes un survivant sur Terre. Les zones changent selon ta présence : prairie piétinée, forêt abîmée, terres sèches et villages dévastés.</p>
-    <p>Les premières vagues sont volontairement lentes pour laisser le temps d'explorer.</p>
-    <button id="startBtn">Lancer l'expédition</button>
-  </div>
+
+    <div class="card">
+
+        <h1>NEON WILDS</h1>
+
+        <div class="sub">
+            V3 · Terre vivante
+        </div>
+
+        <p>
+            Un survivant, une campagne terrestre,
+            des vagues d’assaillants et un monde
+            qui se détériore selon les zones que tu occupes.
+        </p>
+
+        <p>
+            Entre les vagues, profite des accalmies
+            pour changer de secteur.
+        </p>
+
+        <button id="startBtn">
+            Lancer l'expédition
+        </button>
+
+    </div>
+
 </div>
 
 <div id="levelup" class="hidden">
-  <div class="card">
-    <h2>Choisis une amélioration</h2>
-    <div id="choices"></div>
-  </div>
+
+    <div class="card">
+
+        <h2>Choisis une amélioration</h2>
+
+        <div id="choices"></div>
+
+    </div>
+
 </div>
 
 <div id="gameover" class="hidden">
-  <div class="card">
-    <h2>Expédition terminée</h2>
-    <p id="score"></p>
-    <button onclick="location.reload()">Recommencer</button>
-  </div>
+
+    <div class="card">
+
+        <h2>Expédition terminée</h2>
+
+        <p id="score"></p>
+
+        <button onclick="location.reload()">
+            Recommencer
+        </button>
+
+    </div>
+
 </div>
 
 <script>
-const C=document.getElementById("game"),
-ctx=C.getContext("2d"),
-$=id=>document.getElementById(id);
 
-let W,H,D=Math.min(2,devicePixelRatio||1);
+const C=document.getElementById("game");
+const ctx=C.getContext("2d");
+
+const $=id=>document.getElementById(id);
+
+let W,H;
+
+let D=Math.min(
+    2,
+    devicePixelRatio||1
+);
 
 function resize(){
-  W=innerWidth;
-  H=innerHeight;
-  C.width=W*D;
-  C.height=H*D;
-  ctx.setTransform(D,0,0,D,0,0);
+
+    W=innerWidth;
+    H=innerHeight;
+
+    C.width=W*D;
+    C.height=H*D;
+
+    ctx.setTransform(
+        D,0,0,D,0,0
+    );
 }
-addEventListener("resize",resize,{passive:true});
+
+addEventListener(
+    "resize",
+    resize,
+    {passive:true}
+);
+
 resize();
 
-const world={w:2200,h:1600};
-const cam={x:0,y:0};
+
+/* =========================
+   MONDE
+========================= */
+
+const world={
+    w:2400,
+    h:1700
+};
+
+const cam={
+    x:0,
+    y:0
+};
 
 const zones=[
-  {name:"Prairie",x:60,y:60,w:760,h:610,type:"grass",stress:0},
-  {name:"Forêt",x:900,y:60,w:720,h:620,type:"forest",stress:0},
-  {name:"Village",x:1650,y:100,w:470,h:590,type:"village",stress:0},
-  {name:"Champ",x:170,y:790,w:730,h:620,type:"field",stress:0},
-  {name:"Bocage",x:990,y:790,w:690,h:620,type:"hedge",stress:0},
-  {name:"Rivière",x:1750,y:790,w:340,h:620,type:"river",stress:0}
+
+{
+    name:"Ferme",
+    x:250,
+    y:220,
+    w:520,
+    h:440,
+    type:"farm",
+    stress:0
+},
+
+{
+    name:"Prairie",
+    x:60,
+    y:60,
+    w:980,
+    h:720,
+    type:"grass",
+    stress:0
+},
+
+{
+    name:"Forêt",
+    x:1030,
+    y:80,
+    w:690,
+    h:700,
+    type:"forest",
+    stress:0
+},
+
+{
+    name:"Village",
+    x:1740,
+    y:130,
+    w:560,
+    h:630,
+    type:"village",
+    stress:0
+},
+
+{
+    name:"Champ",
+    x:120,
+    y:880,
+    w:820,
+    h:620,
+    type:"field",
+    stress:0
+},
+
+{
+    name:"Bocage",
+    x:960,
+    y:860,
+    w:760,
+    h:630,
+    type:"hedge",
+    stress:0
+},
+
+{
+    name:"Rivière",
+    x:1770,
+    y:850,
+    w:480,
+    h:670,
+    type:"river",
+    stress:0
+}
+
 ];
 
+
+/* =========================
+   VARIABLES
+========================= */
+
 let player;
+
 let enemies=[];
 let bullets=[];
 let particles=[];
 let orbs=[];
+
 let running=false;
+
 let last=0;
 let t=0;
-let spawnT=0;
+
 let shotT=0;
-let bossT=75;
 
-const joy={x:0,y:0,id:null};
+let waveIndex=0;
+let waveState="calm";
+let waveTimer=12;
+let waveToSpawn=0;
+let waveSpawnT=0;
 
-const rand=(a,b)=>a+Math.random()*(b-a);
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const joy={
+    x:0,
+    y:0,
+    id:null
+};
+
+const rand=(a,b)=>
+    a+Math.random()*(b-a);
+
+const clamp=(v,a,b)=>
+    Math.max(a,Math.min(b,v));
+
+const dist=(a,b)=>
+    Math.hypot(
+        a.x-b.x,
+        a.y-b.y
+    );
+
+
+/* =========================
+   DÉMARRAGE
+========================= */
 
 function reset(){
-  player={
-    x:500,
-    y:450,
-    r:13,
-    hp:100,
-    maxHp:100,
-    speed:180,
-    damage:16,
-    fire:.62,
-    bulletSpeed:420,
-    level:1,
-    xp:0,
-    next:22,
-    crit:.08,
-    regen:0,
-    orbits:0,
-    pulseCd:0,
-    walk:0,
-    facing:1
-  };
 
-  enemies=[];
-  bullets=[];
-  particles=[];
-  orbs=[];
-  t=0;
-  spawnT=1.8;
-  shotT=.5;
-  bossT=75;
-  zones.forEach(z=>z.stress=0);
-}
+    player={
 
-function zoneNow(){
-  return zones.find(z=>
-    player.x>=z.x &&
-    player.x<=z.x+z.w &&
-    player.y>=z.y &&
-    player.y<=z.y+z.h
-  ) || zones[0];
-}
+        x:620,
+        y:590,
 
-function stage(z){
-  return z.stress<20?0:
-         z.stress<42?1:
-         z.stress<68?2:3;
-}
+        r:18,
 
-function label(z){
-  const s=stage(z);
-  const m={
-    grass:["Prairie intacte","Prairie piétinée","Prairie desséchée","Prairie hostile"],
-    forest:["Forêt saine","Forêt éclaircie","Forêt abîmée","Forêt hostile"],
-    village:["Village calme","Village pillé","Village incendié","Ruines hostiles"],
-    field:["Champ fertile","Champ exploité","Champ sec","Champ hostile"],
-    hedge:["Bocage intact","Bocage fragilisé","Bocage dégradé","Bocage hostile"],
-    river:["Rive saine","Rive troublée","Rive polluée","Rive hostile"]
-  };
-  return m[z.type][s];
-}
+        hp:120,
+        maxHp:120,
 
-function interval(){
-  if(t<25)return 2.8;
-  if(t<55)return 2.0;
-  if(t<100)return 1.4;
-  if(t<160)return 1.0;
-  return .78;
-}
+        speed:190,
 
-function spawn(kind){
-  const a=Math.random()*Math.PI*2;
-  const R=Math.max(W,H)*.7+200;
+        damage:17,
 
-  let x=clamp(player.x+Math.cos(a)*R,-30,world.w+30);
-  let y=clamp(player.y+Math.sin(a)*R,-30,world.h+30);
+        fire:.58,
 
-  let e={
-    x,y,
-    r:12,
-    hp:24+t*.15,
-    speed:31+t*.055,
-    damage:8,
-    kind:kind||"walker",
-    hit:0
-  };
+        bulletSpeed:450,
 
-  if(e.kind==="fast"){
-    e.r=9;
-    e.speed*=1.5;
-    e.hp*=.72;
-    e.damage=7;
-  }
+        level:1,
 
-  if(e.kind==="tank"){
-    e.r=18;
-    e.speed*=.65;
-    e.hp*=2.8;
-    e.damage=14;
-  }
+        xp:0,
+        next:24,
 
-  if(e.kind==="boss"){
-    e.r=34;
-    e.speed=27+t*.025;
-    e.hp=500+t*4;
-    e.damage=22;
-  }
+        crit:.08,
 
-  enemies.push(e);
-}
+        regen:0,
 
-function shoot(){
-  if(!enemies.length)return;
+        orbits:0,
 
-  let trg=enemies[0];
-  let best=dist(player,trg);
+        pulseCd:0,
 
-  for(const e of enemies){
-    const d=dist(player,e);
-    if(d<best){
-      best=d;
-      trg=e;
-    }
-  }
+        walk:0,
 
-  const dx=trg.x-player.x;
-  const dy=trg.y-player.y;
-  const m=Math.hypot(dx,dy)||1;
+        facing:1,
 
-  const crit=Math.random()<player.crit;
-
-  bullets.push({
-    x:player.x,
-    y:player.y,
-    vx:dx/m*player.bulletSpeed,
-    vy:dy/m*player.bulletSpeed,
-    r:4.5,
-    damage:player.damage*(crit?2:1),
-    crit,
-    dead:false
-  });
-}
-
-function gain(v){
-  player.xp+=v;
-
-  if(player.xp>=player.next){
-    player.xp-=player.next;
-    player.level++;
-    player.next=Math.floor(player.next*1.3+8);
-    levelUp();
-  }
-}
-
-const ups=[
-  ["Visée plus rapide","Cadence +18%",p=>p.fire*=.82],
-  ["Munitions renforcées","Dégâts +28%",p=>p.damage*=1.28],
-  ["Veste renforcée","+24 PV max et soin",p=>{
-    p.maxHp+=24;
-    p.hp=Math.min(p.maxHp,p.hp+24);
-  }],
-  ["Chaussures de randonnée","Vitesse +15%",p=>p.speed*=1.15],
-  ["Instinct du chasseur","Critiques +10%",p=>p.crit+=.10],
-  ["Drone artisanal","Ajoute un drone orbital",p=>p.orbits++],
-  ["Trousse de soins","Régénération lente",p=>p.regen+=1]
-];
-
-function levelUp(){
-  running=false;
-  $("choices").innerHTML="";
-
-  [...ups]
-  .sort(()=>Math.random()-.5)
-  .slice(0,3)
-  .forEach(u=>{
-    const b=document.createElement("button");
-    b.className="choice";
-    b.innerHTML="<b>"+u[0]+"</b><br><small>"+u[1]+"</small>";
-
-    b.onclick=()=>{
-      u[2](player);
-      $("levelup").classList.add("hidden");
-      running=true;
-      last=performance.now();
+        recoil:0
     };
 
-    $("choices").appendChild(b);
-  });
+    enemies=[];
+    bullets=[];
+    particles=[];
+    orbs=[];
 
-  $("levelup").classList.remove("hidden");
+    t=0;
+
+    shotT=.4;
+
+    waveIndex=0;
+
+    waveState="calm";
+
+    waveTimer=12;
+
+    waveToSpawn=0;
+
+    waveSpawnT=0;
+
+    zones.forEach(
+        z=>z.stress=0
+    );
 }
+
+
+/* =========================
+   ZONES
+========================= */
+
+function zoneNow(){
+
+    return zones.find(z=>
+
+        player.x>=z.x &&
+        player.x<=z.x+z.w &&
+
+        player.y>=z.y &&
+        player.y<=z.y+z.h
+
+    ) || zones[1];
+}
+
+
+function stage(z){
+
+    return z.stress<18 ? 0 :
+           z.stress<38 ? 1 :
+           z.stress<65 ? 2 :
+           3;
+}
+
+
+function zoneLabel(z){
+
+    const s=stage(z);
+
+    const m={
+
+        farm:[
+            "Ferme intacte",
+            "Ferme exploitée",
+            "Ferme délabrée",
+            "Ferme hostile"
+        ],
+
+        grass:[
+            "Prairie intacte",
+            "Prairie piétinée",
+            "Prairie desséchée",
+            "Prairie hostile"
+        ],
+
+        forest:[
+            "Forêt saine",
+            "Forêt éclaircie",
+            "Forêt abîmée",
+            "Forêt morte"
+        ],
+
+        village:[
+            "Village calme",
+            "Village pillé",
+            "Village incendié",
+            "Ruines hostiles"
+        ],
+
+        field:[
+            "Champ fertile",
+            "Champ exploité",
+            "Champ sec",
+            "Champ hostile"
+        ],
+
+        hedge:[
+            "Bocage intact",
+            "Bocage fragilisé",
+            "Bocage dégradé",
+            "Bocage hostile"
+        ],
+
+        river:[
+            "Rive saine",
+            "Rive troublée",
+            "Rive polluée",
+            "Rive hostile"
+        ]
+    };
+
+    return m[z.type][s];
+}
+
+
+/* =========================
+   VAGUES
+========================= */
+
+function waveText(){
+
+    if(waveState==="calm"){
+
+        return "Accalmie · "+
+        Math.ceil(waveTimer)+
+        " s";
+    }
+
+    return "Vague "+
+        waveIndex+
+        " · "+
+        enemies.length+
+        " ennemis";
+}
+
+
+function banner(text){
+
+    const b=$("waveBanner");
+
+    b.textContent=text;
+
+    b.classList.add("show");
+
+    setTimeout(
+        ()=>b.classList.remove("show"),
+        1800
+    );
+}
+
+
+function startWave(){
+
+    waveIndex++;
+
+    waveState="active";
+
+    waveToSpawn=
+        5+
+        waveIndex*3+
+        (
+            waveIndex%3===0
+            ?3
+            :0
+        );
+
+    waveSpawnT=.2;
+
+    banner(
+        "VAGUE "+waveIndex
+    );
+}
+
+
+/* =========================
+   ENNEMIS
+========================= */
+
+function spawnEnemy(kind){
+
+    const a=
+        Math.random()*
+        Math.PI*2;
+
+    const R=
+        Math.min(
+            600,
+            Math.max(
+                360,
+                Math.min(W,H)*.55
+            )
+        );
+
+    let x=
+        clamp(
+            player.x+
+            Math.cos(a)*R,
+            30,
+            world.w-30
+        );
+
+    let y=
+        clamp(
+            player.y+
+            Math.sin(a)*R,
+            30,
+            world.h-30
+        );
+
+    let e={
+
+        x,
+        y,
+
+        r:15,
+
+        hp:
+            30+
+            t*.12+
+            waveIndex*3,
+
+        speed:
+            52+
+            waveIndex*1.2,
+
+        damage:8.5,
+
+        kind:
+            kind||
+            "walker",
+
+        hit:0,
+
+        anim:
+            rand(
+                0,
+                6.28
+            )
+    };
+
+
+    if(e.kind==="fast"){
+
+        e.r=12;
+
+        e.speed*=1.45;
+
+        e.hp*=.72;
+
+        e.damage=7;
+    }
+
+
+    if(e.kind==="tank"){
+
+        e.r=21;
+
+        e.speed*=.72;
+
+        e.hp*=2.6;
+
+        e.damage=14;
+    }
+
+
+    if(e.kind==="boss"){
+
+        e.r=32;
+
+        e.speed=
+            40+
+            waveIndex;
+
+        e.hp=
+            420+
+            waveIndex*90;
+
+        e.damage=20;
+    }
+
+    enemies.push(e);
+}
+
+
+function pickKind(){
+
+    const r=Math.random();
+
+    if(
+        waveIndex>=3 &&
+        r<.10
+    ){
+        return "fast";
+    }
+
+    if(
+        waveIndex>=2 &&
+        r<.20
+    ){
+        return "tank";
+    }
+
+    return "walker";
+}
+
+
+/* =========================
+   TIR AUTOMATIQUE
+========================= */
+
+function shoot(){
+
+    if(!enemies.length){
+        return;
+    }
+
+    let trg=enemies[0];
+
+    let best=
+        dist(
+            player,
+            trg
+        );
+
+    for(const e of enemies){
+
+        const d=
+            dist(
+                player,
+                e
+            );
+
+        if(d<best){
+
+            best=d;
+            trg=e;
+        }
+    }
+
+    const dx=
+        trg.x-
+        player.x;
+
+    const dy=
+        trg.y-
+        player.y;
+
+    const m=
+        Math.hypot(
+            dx,
+            dy
+        )||1;
+
+    const crit=
+        Math.random()<
+        player.crit;
+
+    bullets.push({
+
+        x:
+            player.x+
+            dx/m*18,
+
+        y:
+            player.y+
+            dy/m*18,
+
+        vx:
+            dx/m*
+            player.bulletSpeed,
+
+        vy:
+            dy/m*
+            player.bulletSpeed,
+
+        r:5,
+
+        damage:
+            player.damage*
+            (crit?2:1),
+
+        crit,
+
+        dead:false
+    });
+
+    player.facing=
+        dx>=0
+        ?1
+        :-1;
+
+    player.recoil=.08;
+}
+
+
+/* =========================
+   EXPÉRIENCE
+========================= */
+
+function gain(v){
+
+    player.xp+=v;
+
+    if(
+        player.xp>=
+        player.next
+    ){
+
+        player.xp-=
+            player.next;
+
+        player.level++;
+
+        player.next=
+            Math.floor(
+                player.next*
+                1.28+
+                9
+            );
+
+        showLevel();
+    }
+}
+
+
+/* =========================
+   AMÉLIORATIONS
+========================= */
+
+const upgrades=[
+
+[
+    "Cadence améliorée",
+    "Tire 18% plus vite",
+    p=>p.fire*=.82
+],
+
+[
+    "Munitions lourdes",
+    "Dégâts +28%",
+    p=>p.damage*=1.28
+],
+
+[
+    "Gilet renforcé",
+    "+30 PV max et soin",
+    p=>{
+
+        p.maxHp+=30;
+
+        p.hp=
+            Math.min(
+                p.maxHp,
+                p.hp+30
+            );
+    }
+],
+
+[
+    "Bottes de terrain",
+    "Vitesse +15%",
+    p=>p.speed*=1.15
+],
+
+[
+    "Instinct du chasseur",
+    "Critiques +10%",
+    p=>p.crit+=.10
+],
+
+[
+    "Drone artisanal",
+    "Ajoute un drone orbital",
+    p=>p.orbits++
+],
+
+[
+    "Trousse de soins",
+    "Régénération lente",
+    p=>p.regen+=1
+]
+
+];
+
+
+function showLevel(){
+
+    running=false;
+
+    $("choices").innerHTML="";
+
+    [...upgrades]
+
+    .sort(
+        ()=>Math.random()-.5
+    )
+
+    .slice(
+        0,
+        3
+    )
+
+    .forEach(u=>{
+
+        const b=
+            document.createElement(
+                "button"
+            );
+
+        b.className=
+            "choice";
+
+        b.innerHTML=
+            "<b>"+
+            u[0]+
+            "</b><br><small>"+
+            u[1]+
+            "</small>";
+
+        b.onclick=()=>{
+
+            u[2](player);
+
+            $("levelup")
+            .classList
+            .add("hidden");
+
+            running=true;
+
+            last=
+                performance.now();
+        };
+
+        $("choices")
+        .appendChild(b);
+    });
+
+    $("levelup")
+    .classList
+    .remove("hidden");
+}
+
+
+/* =========================
+   POUVOIR
+========================= */
 
 function pulse(){
-  if(!running || player.pulseCd>0)return;
 
-  player.pulseCd=7;
-
-  for(const e of enemies){
-    const d=dist(player,e);
-
-    if(d<170){
-      e.hp-=48;
-      e.x+=(e.x-player.x)/(d||1)*60;
-      e.y+=(e.y-player.y)/(d||1)*60;
+    if(
+        !running ||
+        player.pulseCd>0
+    ){
+        return;
     }
-  }
 
-  for(let i=0;i<24;i++){
-    particles.push({
-      x:player.x,
-      y:player.y,
-      a:rand(0,Math.PI*2),
-      life:.55,
-      type:"pulse"
-    });
-  }
+    player.pulseCd=7;
+
+    for(const e of enemies){
+
+        const d=
+            dist(
+                player,
+                e
+            );
+
+        if(d<190){
+
+            e.hp-=55;
+
+            e.x+=
+                (e.x-player.x)/
+                (d||1)*
+                70;
+
+            e.y+=
+                (e.y-player.y)/
+                (d||1)*
+                70;
+        }
+    }
+
+    for(
+        let i=0;
+        i<26;
+        i++
+    ){
+
+        particles.push({
+
+            x:player.x,
+            y:player.y,
+
+            a:
+                rand(
+                    0,
+                    Math.PI*2
+                ),
+
+            life:.55,
+
+            type:"pulse"
+        });
+    }
 }
 
-$("pulse").addEventListener("pointerdown",e=>{
-  e.preventDefault();
-  pulse();
-});
+
+$("pulse")
+.addEventListener(
+    "pointerdown",
+    e=>{
+
+        e.preventDefault();
+
+        pulse();
+    }
+);
+
+
+/* =========================
+   JOYSTICK
+========================= */
 
 const J=$("joy");
 const S=$("stick");
 
+
 function moveJoy(e){
-  const r=J.getBoundingClientRect();
-  const cx=r.left+r.width/2;
-  const cy=r.top+r.height/2;
 
-  let dx=e.clientX-cx;
-  let dy=e.clientY-cy;
-  let m=Math.hypot(dx,dy);
-  let lim=Math.min(36,m);
+    const r=
+        J.getBoundingClientRect();
 
-  joy.x=m?dx/m:0;
-  joy.y=m?dy/m:0;
+    const cx=
+        r.left+
+        r.width/2;
 
-  S.style.transform=`translate(${joy.x*lim}px,${joy.y*lim}px)`;
+    const cy=
+        r.top+
+        r.height/2;
+
+    let dx=
+        e.clientX-cx;
+
+    let dy=
+        e.clientY-cy;
+
+    let m=
+        Math.hypot(
+            dx,
+            dy
+        );
+
+    let lim=
+        Math.min(
+            40,
+            m
+        );
+
+    joy.x=
+        m?dx/m:0;
+
+    joy.y=
+        m?dy/m:0;
+
+    S.style.transform=
+        `translate(
+        ${joy.x*lim}px,
+        ${joy.y*lim}px
+        )`;
 }
 
-J.addEventListener("pointerdown",e=>{
-  joy.id=e.pointerId;
-  J.setPointerCapture(e.pointerId);
-  moveJoy(e);
-});
 
-J.addEventListener("pointermove",e=>{
-  if(e.pointerId===joy.id)moveJoy(e);
-});
+J.addEventListener(
+    "pointerdown",
+    e=>{
 
-J.addEventListener("pointerup",e=>{
-  if(e.pointerId===joy.id){
-    joy.x=0;
-    joy.y=0;
-    joy.id=null;
-    S.style.transform="translate(0,0)";
-  }
-});
+        joy.id=
+            e.pointerId;
+
+        J.setPointerCapture(
+            e.pointerId
+        );
+
+        moveJoy(e);
+    }
+);
+
+
+J.addEventListener(
+    "pointermove",
+    e=>{
+
+        if(
+            e.pointerId===
+            joy.id
+        ){
+            moveJoy(e);
+        }
+    }
+);
+
+
+J.addEventListener(
+    "pointerup",
+    e=>{
+
+        if(
+            e.pointerId===
+            joy.id
+        ){
+
+            joy.x=0;
+            joy.y=0;
+            joy.id=null;
+
+            S.style.transform=
+                "translate(0,0)";
+        }
+    }
+);
+
+
+/* =========================
+   UPDATE
+========================= */
 
 function update(dt){
-  t+=dt;
-  spawnT-=dt;
-  shotT-=dt;
-  bossT-=dt;
 
-  player.pulseCd=Math.max(0,player.pulseCd-dt);
-  player.hp=Math.min(player.maxHp,player.hp+player.regen*dt);
+    t+=dt;
 
-  if(Math.abs(joy.x)+Math.abs(joy.y)>.05){
-    player.walk+=dt*10;
+    shotT-=dt;
 
-    if(Math.abs(joy.x)>.15){
-      player.facing=joy.x>0?1:-1;
-    }
-  }
+    player.pulseCd=
+        Math.max(
+            0,
+            player.pulseCd-dt
+        );
 
-  player.x=clamp(
-    player.x+joy.x*player.speed*dt,
-    18,
-    world.w-18
-  );
+    player.recoil=
+        Math.max(
+            0,
+            player.recoil-dt
+        );
 
-  player.y=clamp(
-    player.y+joy.y*player.speed*dt,
-    18,
-    world.h-18
-  );
+    player.hp=
+        Math.min(
+            player.maxHp,
+            player.hp+
+            player.regen*dt
+        );
 
-  const z=zoneNow();
 
-  z.stress=Math.min(
-    100,
-    z.stress+dt*.68
-  );
+    if(
+        Math.abs(joy.x)+
+        Math.abs(joy.y)>
+        .05
+    ){
 
-  for(const o of zones){
-    if(o!==z){
-      o.stress=Math.max(
-        0,
-        o.stress-dt*.035
-      );
-    }
-  }
+        player.walk+=
+            dt*11;
 
-  if(spawnT<=0){
-    let k="walker";
-    const r=Math.random();
+        if(
+            Math.abs(joy.x)>
+            .2
+        ){
 
-    if(t>55 && r<.055){
-      k="fast";
-    }else if(t>35 && r<.13){
-      k="tank";
-    }
-
-    spawn(k);
-    spawnT=interval();
-  }
-
-  if(t>70 && bossT<=0){
-    spawn("boss");
-    bossT=75;
-  }
-
-  if(shotT<=0){
-    shoot();
-    shotT=player.fire;
-  }
-
-  for(const b of bullets){
-    b.x+=b.vx*dt;
-    b.y+=b.vy*dt;
-  }
-
-  bullets=bullets.filter(
-    b=>
-      !b.dead &&
-      b.x>-100 &&
-      b.x<world.w+100 &&
-      b.y>-100 &&
-      b.y<world.h+100
-  );
-
-  for(const e of enemies){
-    let dx=player.x-e.x;
-    let dy=player.y-e.y;
-    let m=Math.hypot(dx,dy)||1;
-
-    e.x+=dx/m*e.speed*dt;
-    e.y+=dy/m*e.speed*dt;
-
-    e.hit=Math.max(0,e.hit-dt);
-
-    if(m<player.r+e.r+2){
-      player.hp-=e.damage*dt;
-    }
-  }
-
-  for(const b of bullets){
-    if(b.dead)continue;
-
-    for(const e of enemies){
-      if(
-        e.hp>0 &&
-        Math.hypot(b.x-e.x,b.y-e.y)<b.r+e.r
-      ){
-        e.hp-=b.damage;
-        e.hit=.08;
-        b.dead=true;
-
-        for(let i=0;i<3;i++){
-          particles.push({
-            x:e.x,
-            y:e.y,
-            a:rand(0,Math.PI*2),
-            life:.25,
-            type:"hit"
-          });
+            player.facing=
+                joy.x>0
+                ?1
+                :-1;
         }
-
-        break;
-      }
     }
-  }
 
-  for(let i=0;i<player.orbits;i++){
-    const a=t*2.2+i*Math.PI*2/player.orbits;
 
-    const ox=player.x+Math.cos(a)*48;
-    const oy=player.y+Math.sin(a)*48;
+    player.x=
+        clamp(
+            player.x+
+            joy.x*
+            player.speed*
+            dt,
 
-    orbs[i]={x:ox,y:oy};
+            25,
+            world.w-25
+        );
 
-    for(const e of enemies){
-      if(
-        Math.hypot(ox-e.x,oy-e.y)<e.r+8
-      ){
-        e.hp-=20*dt;
-      }
-    }
-  }
 
-  let g=0;
+    player.y=
+        clamp(
+            player.y+
+            joy.y*
+            player.speed*
+            dt,
 
-  for(const e of enemies){
-    if(e.hp<=0){
-      g+=
-        e.kind==="boss"?26:
-        e.kind==="tank"?5:
-        2;
-    }
-  }
+            25,
+            world.h-25
+        );
 
-  if(g)gain(g);
 
-  enemies=enemies.filter(e=>e.hp>0);
+    /* DÉGRADATION DU MONDE */
 
-  for(const p of particles){
-    p.life-=dt;
-  }
+    const z=
+        zoneNow();
 
-  particles=particles.filter(p=>p.life>0);
-
-  cam.x=clamp(
-    player.x-W/2,
-    0,
-    Math.max(0,world.w-W)
-  );
-
-  cam.y=clamp(
-    player.y-H/2,
-    0,
-    Math.max(0,world.h-H)
-  );
-
-  if(player.hp<=0){
-    running=false;
-
-    $("score").textContent=
-      `Survie : ${Math.floor(t)} s • Niveau ${player.level}`;
-
-    $("gameover").classList.remove("hidden");
-  }
-
-  $("hpFill").style.width=
-    (player.hp/player.maxHp*100)+"%";
-
-  $("xpFill").style.width=
-    (player.xp/player.next*100)+"%";
-
-  $("level").textContent=
-    "Niv. "+player.level;
-
-  $("time").textContent=
-    String(Math.floor(t/60)).padStart(2,"0")
-    +":"
-    +String(Math.floor(t%60)).padStart(2,"0");
-
-  $("zone").textContent=
-    label(z)+" • "+Math.round(z.stress)+"%";
-
-  $("pulse").style.opacity=
-    player.pulseCd>0?.45:1;
-}
-
-function drawTree(x,y,s){
-  ctx.fillStyle=
-    s>=2?"#614c3c":"#5b402f";
-
-  ctx.fillRect(
-    x-4,
-    y+6,
-    8,
-    18
-  );
-
-  ctx.fillStyle=
-    s===0?"#2f6b38":
-    s===1?"#537444":
-    s===2?"#6e6e42":
-    "#66543d";
-
-  ctx.beginPath();
-  ctx.arc(x,y,17,0,Math.PI*2);
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.arc(x-11,y+7,12,0,Math.PI*2);
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.arc(x+10,y+6,12,0,Math.PI*2);
-  ctx.fill();
-}
-
-function house(x,y,s){
-  ctx.fillStyle=
-    s>=3?"#5d5148":"#d5c69f";
-
-  ctx.fillRect(
-    x,
-    y+18,
-    75,
-    58
-  );
-
-  ctx.fillStyle=
-    s>=2?"#754a3c":"#8d5543";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    x-6,
-    y+20
-  );
-
-  ctx.lineTo(
-    x+38,
-    y-8
-  );
-
-  ctx.lineTo(
-    x+82,
-    y+20
-  );
-
-  ctx.closePath();
-  ctx.fill();
-
-  if(s>=2){
-    ctx.fillStyle="#3b312d";
-
-    ctx.fillRect(
-      x+14,
-      y+34,
-      18,
-      22
-    );
-
-    ctx.fillRect(
-      x+48,
-      y+34,
-      18,
-      22
-    );
-  }
-}
-
-function zoneDraw(z){
-  const x=z.x-cam.x;
-  const y=z.y-cam.y;
-  const s=stage(z);
-
-  if(
-    x>W ||
-    x+z.w<0 ||
-    y>H ||
-    y+z.h<0
-  )return;
-
-  const p={
-    grass:[
-      "#79a85a",
-      "#8e9b58",
-      "#9f8750",
-      "#765548"
-    ],
-    forest:[
-      "#456f43",
-      "#59704b",
-      "#6f654a",
-      "#57463f"
-    ],
-    village:[
-      "#9b9a86",
-      "#927c68",
-      "#795c50",
-      "#5c4945"
-    ],
-    field:[
-      "#b6a25e",
-      "#aa9155",
-      "#9b774d",
-      "#735547"
-    ],
-    hedge:[
-      "#5f8a51",
-      "#6c8050",
-      "#7b704a",
-      "#5f5141"
-    ],
-    river:[
-      "#6ea0a0",
-      "#6c8f8c",
-      "#687975",
-      "#59645f"
-    ]
-  };
-
-  ctx.fillStyle=p[z.type][s];
-
-  ctx.fillRect(
-    x,
-    y,
-    z.w,
-    z.h
-  );
-
-  if(
-    z.type==="forest" ||
-    z.type==="hedge"
-  ){
-    const n=
-      z.type==="forest"?26:18;
-
-    for(let i=0;i<n;i++){
-      const tx=
-        z.x+
-        45+
-        (i*137%(z.w-90));
-
-      const ty=
-        z.y+
-        50+
-        (i*83%(z.h-100));
-
-      drawTree(
-        tx-cam.x,
-        ty-cam.y,
-        s
-      );
-    }
-  }
-
-  if(z.type==="village"){
-    for(let i=0;i<6;i++){
-      const hx=
-        z.x+
-        45+
-        (i%2)*190;
-
-      const hy=
-        z.y+
-        55+
-        Math.floor(i/2)*170;
-
-      house(
-        hx-cam.x,
-        hy-cam.y,
-        s
-      );
-    }
-  }
-
-  if(z.type==="field"){
-    ctx.strokeStyle=
-      s<2?"#d8c77a":"#b49865";
-
-    ctx.lineWidth=3;
+    z.stress=
+        Math.min(
+            100,
+            z.stress+
+            dt*.55
+        );
 
     for(
-      let yy=z.y+35;
-      yy<z.y+z.h;
-      yy+=32
+        const o of zones
     ){
-      ctx.beginPath();
 
-      ctx.moveTo(
-        z.x+30-cam.x,
-        yy-cam.y
-      );
+        if(o!==z){
 
-      ctx.lineTo(
-        z.x+z.w-30-cam.x,
-        yy-cam.y
-      );
-
-      ctx.stroke();
+            o.stress=
+                Math.max(
+                    0,
+                    o.stress-
+                    dt*.03
+                );
+        }
     }
-  }
 
-  if(z.type==="river"){
+
+    /* VAGUES */
+
+    if(
+        waveState===
+        "calm"
+    ){
+
+        waveTimer-=dt;
+
+        if(
+            waveTimer<=0
+        ){
+
+            startWave();
+        }
+    }
+
+    else{
+
+        waveSpawnT-=dt;
+
+        if(
+            waveToSpawn>0 &&
+            waveSpawnT<=0
+        ){
+
+            let k=
+                pickKind();
+
+            if(
+                waveIndex%5===0 &&
+                waveToSpawn===1
+            ){
+
+                k="boss";
+            }
+
+            spawnEnemy(k);
+
+            waveToSpawn--;
+
+            waveSpawnT=
+                Math.max(
+                    .28,
+                    .72-
+                    waveIndex*.025
+                );
+        }
+
+
+        if(
+            waveToSpawn===0 &&
+            enemies.length===0
+        ){
+
+            waveState=
+                "calm";
+
+            waveTimer=
+                Math.max(
+                    7,
+                    12-
+                    waveIndex*.35
+                );
+
+            banner(
+                "ACCALMIE"
+            );
+        }
+    }
+
+
+    /* TIR */
+
+    if(
+        shotT<=0
+    ){
+
+        shoot();
+
+        shotT=
+            player.fire;
+    }
+
+
+    for(
+        const b of bullets
+    ){
+
+        b.x+=
+            b.vx*dt;
+
+        b.y+=
+            b.vy*dt;
+    }
+
+
+    bullets=
+        bullets.filter(
+            b=>
+
+            !b.dead &&
+
+            b.x>-50 &&
+            b.x<world.w+50 &&
+
+            b.y>-50 &&
+            b.y<world.h+50
+        );
+
+
+    /* ENNEMIS */
+
+    for(
+        const e of enemies
+    ){
+
+        const dx=
+            player.x-e.x;
+
+        const dy=
+            player.y-e.y;
+
+        const m=
+            Math.hypot(
+                dx,
+                dy
+            )||1;
+
+        e.anim+=
+            dt*7;
+
+        e.x+=
+            dx/m*
+            e.speed*
+            dt;
+
+        e.y+=
+            dy/m*
+            e.speed*
+            dt;
+
+        e.hit=
+            Math.max(
+                0,
+                e.hit-dt
+            );
+
+
+        if(
+            m<
+            player.r+
+            e.r+
+            2
+        ){
+
+            player.hp-=
+                e.damage*
+                dt;
+        }
+    }
+
+
+    /* COLLISIONS BALLES */
+
+    for(
+        const b of bullets
+    ){
+
+        if(b.dead){
+            continue;
+        }
+
+        for(
+            const e of enemies
+        ){
+
+            if(
+                e.hp>0 &&
+
+                Math.hypot(
+                    b.x-e.x,
+                    b.y-e.y
+                )
+
+                <
+                b.r+
+                e.r
+            ){
+
+                e.hp-=
+                    b.damage;
+
+                e.hit=.08;
+
+                b.dead=true;
+
+
+                for(
+                    let i=0;
+                    i<4;
+                    i++
+                ){
+
+                    particles.push({
+
+                        x:e.x,
+                        y:e.y,
+
+                        a:
+                            rand(
+                                0,
+                                Math.PI*2
+                            ),
+
+                        life:.28,
+
+                        type:"hit"
+                    });
+                }
+
+                break;
+            }
+        }
+    }
+
+
+    /* DRONES */
+
+    for(
+        let i=0;
+        i<player.orbits;
+        i++
+    ){
+
+        const a=
+            t*2.2+
+            i*
+            Math.PI*2/
+            player.orbits;
+
+        const ox=
+            player.x+
+            Math.cos(a)*55;
+
+        const oy=
+            player.y+
+            Math.sin(a)*55;
+
+        orbs[i]={
+            x:ox,
+            y:oy
+        };
+
+
+        for(
+            const e of enemies
+        ){
+
+            if(
+                Math.hypot(
+                    ox-e.x,
+                    oy-e.y
+                )
+
+                <
+                e.r+9
+            ){
+
+                e.hp-=
+                    22*dt;
+            }
+        }
+    }
+
+
+    /* XP */
+
+    let g=0;
+
+    for(
+        const e of enemies
+    ){
+
+        if(e.hp<=0){
+
+            g+=
+                e.kind==="boss"
+                ?30
+                :
+                e.kind==="tank"
+                ?6
+                :
+                2;
+        }
+    }
+
+    if(g){
+        gain(g);
+    }
+
+
+    enemies=
+        enemies.filter(
+            e=>e.hp>0
+        );
+
+
+    for(
+        const p of particles
+    ){
+
+        p.life-=dt;
+    }
+
+
+    particles=
+        particles.filter(
+            p=>p.life>0
+        );
+
+
+    /* CAMÉRA */
+
+    cam.x=
+        clamp(
+            player.x-
+            W/2,
+
+            0,
+
+            Math.max(
+                0,
+                world.w-W
+            )
+        );
+
+
+    cam.y=
+        clamp(
+            player.y-
+            H/2,
+
+            0,
+
+            Math.max(
+                0,
+                world.h-H
+            )
+        );
+
+
+    /* MORT */
+
+    if(
+        player.hp<=0
+    ){
+
+        running=false;
+
+        $("score")
+        .textContent=
+
+            `Survie : ${Math.floor(t)} s
+            • Vague ${waveIndex}
+            • Niveau ${player.level}`;
+
+        $("gameover")
+        .classList
+        .remove("hidden");
+    }
+
+
+    /* HUD */
+
+    $("hpFill")
+    .style.width=
+
+        (
+            player.hp/
+            player.maxHp*
+            100
+        )+"%";
+
+
+    $("xpFill")
+    .style.width=
+
+        (
+            player.xp/
+            player.next*
+            100
+        )+"%";
+
+
+    $("level")
+    .textContent=
+
+        "Niv. "+
+        player.level;
+
+
+    $("time")
+    .textContent=
+
+        String(
+            Math.floor(t/60)
+        )
+        .padStart(2,"0")
+
+        +":"
+
+        +String(
+            Math.floor(t%60)
+        )
+        .padStart(2,"0");
+
+
+    $("zone")
+    .textContent=
+
+        zoneLabel(z)+
+        " · "+
+        Math.round(z.stress)+
+        "%";
+
+
+    $("wave")
+    .textContent=
+        waveText();
+
+
+    $("pulse")
+    .style.opacity=
+
+        player.pulseCd>0
+        ?.45
+        :1;
+}
+
+
+/* =========================
+   GRAPHISMES
+========================= */
+
+function tree(
+    x,
+    y,
+    s,
+    scale=1
+){
+
+    ctx.save();
+
+    ctx.translate(
+        x,
+        y
+    );
+
+    ctx.scale(
+        scale,
+        scale
+    );
+
     ctx.fillStyle=
-      s<2?"#5d9eaa":"#6e7d79";
+        s>=2
+        ?"#624b39"
+        :"#5e402f";
 
     ctx.fillRect(
-      x+z.w*.32,
-      y,
-      Math.max(80,z.w*.36),
-      z.h
+        -5,
+        10,
+        10,
+        24
     );
-  }
+
+
+    ctx.fillStyle=
+
+        s===0
+        ?"#326e3d"
+
+        :s===1
+        ?"#527448"
+
+        :s===2
+        ?"#7a7345"
+
+        :"#62513f";
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        22,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        -14,
+        8,
+        15,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        13,
+        8,
+        15,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.restore();
 }
+
+
+function bush(
+    x,
+    y,
+    s
+){
+
+    ctx.fillStyle=
+        s<2
+        ?"#4f7d46"
+        :"#756a43";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        10,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x+9,
+        y+3,
+        9,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x-8,
+        y+4,
+        8,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+}
+
+
+function rock(
+    x,
+    y
+){
+
+    ctx.fillStyle=
+        "#77786e";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x,
+        y,
+        13,
+        9,
+        -.2,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle=
+        "#95978c";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x-3,
+        y-3,
+        6,
+        3,
+        -.2,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+}
+
+
+function house(
+    x,
+    y,
+    s,
+    scale=1
+){
+
+    ctx.save();
+
+    ctx.translate(
+        x,
+        y
+    );
+
+    ctx.scale(
+        scale,
+        scale
+    );
+
+
+    ctx.fillStyle=
+        s>=3
+        ?"#5b504a"
+        :"#d8c7a2";
+
+    ctx.fillRect(
+        0,
+        24,
+        88,
+        64
+    );
+
+
+    ctx.fillStyle=
+        s>=2
+        ?"#70483d"
+        :"#8f5442";
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -8,
+        25
+    );
+
+    ctx.lineTo(
+        44,
+        -10
+    );
+
+    ctx.lineTo(
+        96,
+        25
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+
+    ctx.fillStyle=
+        "#5b392d";
+
+    ctx.fillRect(
+        34,
+        54,
+        20,
+        34
+    );
+
+
+    ctx.fillStyle=
+        s>=2
+        ?"#312b28"
+        :"#86a9b7";
+
+
+    ctx.fillRect(
+        9,
+        43,
+        18,
+        18
+    );
+
+
+    ctx.fillRect(
+        61,
+        43,
+        18,
+        18
+    );
+
+
+    ctx.restore();
+}
+
+
+function fence(
+    x1,
+    y1,
+    x2,
+    y2
+){
+
+    ctx.strokeStyle=
+        "#96744b";
+
+    ctx.lineWidth=5;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x1,
+        y1
+    );
+
+    ctx.lineTo(
+        x2,
+        y2
+    );
+
+    ctx.stroke();
+
+
+    for(
+        let u=0;
+        u<=1;
+        u+=.12
+    ){
+
+        let x=
+            x1+
+            (x2-x1)*u;
+
+        let y=
+            y1+
+            (y2-y1)*u;
+
+
+        ctx.fillStyle=
+            "#a47d50";
+
+        ctx.fillRect(
+            x-2,
+            y-7,
+            4,
+            14
+        );
+    }
+}
+
+
+/* =========================
+   DESSIN DES ZONES
+========================= */
+
+function drawZone(z){
+
+    const x=
+        z.x-
+        cam.x;
+
+    const y=
+        z.y-
+        cam.y;
+
+    const s=
+        stage(z);
+
+
+    if(
+        x>W ||
+        x+z.w<0 ||
+        y>H ||
+        y+z.h<0
+    ){
+        return;
+    }
+
+
+    const p={
+
+        farm:[
+            "#8ca46c",
+            "#9b9564",
+            "#9a7e58",
+            "#755a48"
+        ],
+
+        grass:[
+            "#7fac5c",
+            "#8e9e58",
+            "#a58d54",
+            "#7c5949"
+        ],
+
+        forest:[
+            "#496f45",
+            "#5d714c",
+            "#716749",
+            "#57463d"
+        ],
+
+        village:[
+            "#9d9b89",
+            "#927c69",
+            "#785a4d",
+            "#5b4844"
+        ],
+
+        field:[
+            "#b8a55f",
+            "#aa9254",
+            "#9a774c",
+            "#745548"
+        ],
+
+        hedge:[
+            "#628b54",
+            "#6b8051",
+            "#7b704a",
+            "#5f5141"
+        ],
+
+        river:[
+            "#6da2a8",
+            "#708f8e",
+            "#6b7975",
+            "#5d6661"
+        ]
+    };
+
+
+    ctx.fillStyle=
+        p[z.type][s];
+
+    ctx.fillRect(
+        x,
+        y,
+        z.w,
+        z.h
+    );
+
+
+    /* HERBE */
+
+    if(
+        z.type==="grass" ||
+        z.type==="farm"
+    ){
+
+        for(
+            let i=0;
+            i<32;
+            i++
+        ){
+
+            let gx=
+                z.x+
+                30+
+                (
+                    i*71%
+                    (z.w-60)
+                )-
+                cam.x;
+
+            let gy=
+                z.y+
+                30+
+                (
+                    i*113%
+                    (z.h-60)
+                )-
+                cam.y;
+
+
+            ctx.strokeStyle=
+                s<2
+                ?"#d8e59d88"
+                :"#d9c27c55";
+
+            ctx.lineWidth=2;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                gx,
+                gy+5
+            );
+
+            ctx.lineTo(
+                gx+2,
+                gy-5
+            );
+
+            ctx.stroke();
+        }
+    }
+
+
+    /* FORÊT */
+
+    if(
+        z.type==="forest" ||
+        z.type==="hedge"
+    ){
+
+        let n=
+            z.type==="forest"
+            ?34
+            :20;
+
+
+        for(
+            let i=0;
+            i<n;
+            i++
+        ){
+
+            let tx=
+                z.x+
+                40+
+                (
+                    i*137%
+                    (z.w-80)
+                );
+
+            let ty=
+                z.y+
+                45+
+                (
+                    i*91%
+                    (z.h-90)
+                );
+
+
+            tree(
+                tx-cam.x,
+                ty-cam.y,
+                s,
+                .8+
+                (i%3)*.1
+            );
+        }
+    }
+
+
+    /* VILLAGE */
+
+    if(
+        z.type==="village"
+    ){
+
+        for(
+            let i=0;
+            i<6;
+            i++
+        ){
+
+            let hx=
+                z.x+
+                50+
+                (i%2)*220;
+
+            let hy=
+                z.y+
+                55+
+                Math.floor(i/2)*185;
+
+
+            house(
+                hx-cam.x,
+                hy-cam.y,
+                s,
+                .9
+            );
+        }
+    }
+
+
+    /* CHAMP */
+
+    if(
+        z.type==="field"
+    ){
+
+        ctx.strokeStyle=
+            s<2
+            ?"#dac879"
+            :"#b89863";
+
+        ctx.lineWidth=3;
+
+
+        for(
+            let yy=z.y+35;
+            yy<z.y+z.h;
+            yy+=30
+        ){
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                z.x+25-cam.x,
+                yy-cam.y
+            );
+
+            ctx.lineTo(
+                z.x+z.w-25-cam.x,
+                yy-cam.y
+            );
+
+            ctx.stroke();
+        }
+    }
+
+
+    /* RIVIÈRE */
+
+    if(
+        z.type==="river"
+    ){
+
+        ctx.fillStyle=
+            s<2
+            ?"#5a9eab"
+            :"#687e7a";
+
+        ctx.fillRect(
+
+            x+
+            z.w*.28,
+
+            y,
+
+            Math.max(
+                100,
+                z.w*.44
+            ),
+
+            z.h
+        );
+    }
+
+
+    /* SOL DÉGRADÉ */
+
+    if(s>=2){
+
+        ctx.strokeStyle=
+            "#5a463155";
+
+        ctx.lineWidth=2;
+
+
+        for(
+            let i=0;
+            i<10;
+            i++
+        ){
+
+            let cx=
+                x+
+                40+
+                (
+                    i*79%
+                    Math.max(
+                        80,
+                        z.w-80
+                    )
+                );
+
+            let cy=
+                y+
+                40+
+                (
+                    i*103%
+                    Math.max(
+                        80,
+                        z.h-80
+                    )
+                );
+
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                cx-12,
+                cy
+            );
+
+            ctx.lineTo(
+                cx+12,
+                cy+3
+            );
+
+            ctx.moveTo(
+                cx,
+                cy-9
+            );
+
+            ctx.lineTo(
+                cx+4,
+                cy+10
+            );
+
+            ctx.stroke();
+        }
+    }
+}
+
+
+/* =========================
+   MONDE
+========================= */
+
+function drawWorld(){
+
+    ctx.fillStyle=
+        "#75935e";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* ROUTE */
+
+    ctx.strokeStyle=
+        "#a78d65";
+
+    ctx.lineWidth=100;
+
+    ctx.lineCap=
+        "round";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -cam.x,
+        810-cam.y
+    );
+
+    ctx.bezierCurveTo(
+
+        650-cam.x,
+        690-cam.y,
+
+        1450-cam.x,
+        910-cam.y,
+
+        2400-cam.x,
+        760-cam.y
+    );
+
+    ctx.stroke();
+
+
+    ctx.strokeStyle=
+        "#c6aa78";
+
+    ctx.lineWidth=68;
+
+    ctx.stroke();
+
+
+    zones.forEach(
+        drawZone
+    );
+
+
+    /* FERME */
+
+    fence(
+        300-cam.x,
+        250-cam.y,
+
+        760-cam.x,
+        250-cam.y
+    );
+
+
+    fence(
+        300-cam.x,
+        650-cam.y,
+
+        760-cam.x,
+        650-cam.y
+    );
+
+
+    house(
+        390-cam.x,
+        340-cam.y,
+        stage(zones[0]),
+        1.15
+    );
+
+
+    house(
+        600-cam.x,
+        390-cam.y,
+        stage(zones[0]),
+        .8
+    );
+
+
+    /* BUISSONS */
+
+    for(
+        let i=0;
+        i<18;
+        i++
+    ){
+
+        bush(
+
+            140+
+            (
+                i*127%
+                2050
+            )-
+            cam.x,
+
+            120+
+            (
+                i*173%
+                1450
+            )-
+            cam.y,
+
+            0
+        );
+    }
+
+
+    /* ROCHERS */
+
+    for(
+        let i=0;
+        i<14;
+        i++
+    ){
+
+        rock(
+
+            90+
+            (
+                i*163%
+                2200
+            )-
+            cam.x,
+
+            180+
+            (
+                i*119%
+                1320
+            )-
+            cam.y
+        );
+    }
+}
+
+
+/* =========================
+   ENNEMIS VISUELS
+========================= */
 
 function enemyDraw(e){
-  const x=e.x-cam.x;
-  const y=e.y-cam.y;
 
-  ctx.save();
-  ctx.translate(x,y);
+    const x=
+        e.x-
+        cam.x;
 
-  ctx.fillStyle=
-    e.hit>0?"#fff":
-    e.kind==="boss"?"#7a2d26":
-    e.kind==="tank"?"#6b533f":
-    e.kind==="fast"?"#7f6648":
-    "#51453a";
+    const y=
+        e.y-
+        cam.y;
 
-  ctx.beginPath();
-  ctx.arc(0,0,e.r,0,Math.PI*2);
-  ctx.fill();
+    const walk=
+        Math.sin(
+            e.anim
+        )*3;
 
-  ctx.fillStyle="#d6c2a5";
 
-  ctx.beginPath();
-  ctx.arc(
-    0,
-    -e.r*.45,
-    e.r*.45,
-    0,
-    Math.PI*2
-  );
-  ctx.fill();
+    ctx.save();
 
-  ctx.restore();
-}
+    ctx.translate(
+        x,
+        y
+    );
 
-function playerDraw(){
-  const x=player.x-cam.x;
-  const y=player.y-cam.y;
-  const w=Math.sin(player.walk)*3;
 
-  ctx.save();
-  ctx.translate(x,y);
+    /* JAMBES */
 
-  ctx.strokeStyle="#29343c";
-  ctx.lineWidth=6;
-  ctx.lineCap="round";
+    ctx.strokeStyle=
+        e.kind==="boss"
+        ?"#3b1814"
+        :"#3d332a";
 
-  ctx.beginPath();
+    ctx.lineWidth=
+        e.kind==="boss"
+        ?8
+        :6;
 
-  ctx.moveTo(-5,10);
-  ctx.lineTo(-6-w,22);
+    ctx.lineCap=
+        "round";
 
-  ctx.moveTo(5,10);
-  ctx.lineTo(6+w,22);
 
-  ctx.stroke();
+    ctx.beginPath();
 
-  ctx.fillStyle="#355c7d";
-  ctx.fillRect(
-    -9,
-    -5,
-    18,
-    20
-  );
+    ctx.moveTo(
+        -5,
+        9
+    );
 
-  ctx.fillStyle="#59634a";
+    ctx.lineTo(
+        -7-walk,
+        21
+    );
 
-  ctx.fillRect(
-    player.facing>0?-13:6,
-    -2,
-    8,
-    15
-  );
+    ctx.moveTo(
+        5,
+        9
+    );
 
-  ctx.strokeStyle="#d5b08c";
-  ctx.lineWidth=5;
+    ctx.lineTo(
+        7+walk,
+        21
+    );
 
-  ctx.beginPath();
+    ctx.stroke();
 
-  ctx.moveTo(-7,1);
-  ctx.lineTo(-12,-8);
 
-  ctx.moveTo(7,1);
-  ctx.lineTo(13,-8);
+    /* CORPS */
 
-  ctx.stroke();
-
-  ctx.strokeStyle="#4d4134";
-  ctx.lineWidth=4;
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    8*player.facing,
-    -7
-  );
-
-  ctx.lineTo(
-    23*player.facing,
-    -11
-  );
-
-  ctx.stroke();
-
-  ctx.fillStyle="#d7b18c";
-
-  ctx.beginPath();
-  ctx.arc(
-    0,
-    -12,
-    8,
-    0,
-    Math.PI*2
-  );
-  ctx.fill();
-
-  ctx.fillStyle="#49382b";
-
-  ctx.beginPath();
-  ctx.arc(
-    0,
-    -15,
-    8,
-    Math.PI,
-    Math.PI*2
-  );
-  ctx.fill();
-
-  ctx.restore();
-}
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-
-  ctx.fillStyle="#6f9650";
-  ctx.fillRect(0,0,W,H);
-
-  ctx.strokeStyle="#b69b69";
-  ctx.lineWidth=70;
-  ctx.lineCap="round";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    80-cam.x,
-    720-cam.y
-  );
-
-  ctx.lineTo(
-    2110-cam.x,
-    720-cam.y
-  );
-
-  ctx.moveTo(
-    870-cam.x,
-    40-cam.y
-  );
-
-  ctx.lineTo(
-    870-cam.x,
-    1540-cam.y
-  );
-
-  ctx.stroke();
-
-  ctx.strokeStyle="#ccb07b";
-  ctx.lineWidth=44;
-  ctx.stroke();
-
-  zones.forEach(zoneDraw);
-  enemies.forEach(enemyDraw);
-
-  for(const b of bullets){
     ctx.fillStyle=
-      b.crit?"#ffe66d":"#f7f3d7";
+
+        e.hit>0
+        ?"#fff"
+
+        :e.kind==="boss"
+        ?"#7a2d26"
+
+        :e.kind==="tank"
+        ?"#725943"
+
+        :e.kind==="fast"
+        ?"#80634a"
+
+        :"#55483a";
+
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        -12,
+        -6,
+        24,
+        25,
+        6
+    );
+
+    ctx.fill();
+
+
+    /* TÊTE */
+
+    ctx.fillStyle=
+        "#c7a785";
 
     ctx.beginPath();
 
     ctx.arc(
-      b.x-cam.x,
-      b.y-cam.y,
-      b.r,
-      0,
-      Math.PI*2
+        0,
+        -14,
+
+        e.kind==="boss"
+        ?11
+        :9,
+
+        0,
+        Math.PI*2
     );
 
     ctx.fill();
-  }
 
-  for(const o of orbs){
-    if(!o)continue;
 
-    ctx.fillStyle="#d7a04a";
+    ctx.fillStyle=
+        "#332a24";
 
     ctx.beginPath();
 
     ctx.arc(
-      o.x-cam.x,
-      o.y-cam.y,
-      7,
-      0,
-      Math.PI*2
+        0,
+        -17,
+
+        e.kind==="boss"
+        ?11
+        :9,
+
+        Math.PI,
+        Math.PI*2
     );
 
     ctx.fill();
-  }
 
-  for(const p of particles){
-    ctx.globalAlpha=
-      Math.max(0,p.life*2);
+
+    /* YEUX */
 
     ctx.fillStyle=
-      p.type==="pulse"
-      ?"#ffd26d"
-      :"#fff";
+        "#d9d09c";
 
     ctx.fillRect(
-      p.x-cam.x+
-      Math.cos(p.a)*(1-p.life)*34,
-
-      p.y-cam.y+
-      Math.sin(p.a)*(1-p.life)*34,
-
-      3,
-      3
+        -4,
+        -16,
+        2,
+        2
     );
 
-    ctx.globalAlpha=1;
-  }
+    ctx.fillRect(
+        3,
+        -16,
+        2,
+        2
+    );
 
-  playerDraw();
+
+    ctx.restore();
 }
+
+
+/* =========================
+   PERSONNAGE
+========================= */
+
+function playerDraw(){
+
+    const x=
+        player.x-
+        cam.x;
+
+    const y=
+        player.y-
+        cam.y;
+
+    const walk=
+        Math.sin(
+            player.walk
+        )*4;
+
+
+    ctx.save();
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    /* OMBRE */
+
+    ctx.shadowColor=
+        "#0006";
+
+    ctx.shadowBlur=8;
+
+    ctx.shadowOffsetY=5;
+
+    ctx.fillStyle=
+        "#0003";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        0,
+        18,
+        18,
+        8,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.shadowColor=
+        "transparent";
+
+
+    /* JAMBES */
+
+    ctx.strokeStyle=
+        "#2b333b";
+
+    ctx.lineWidth=7;
+
+    ctx.lineCap=
+        "round";
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -6,
+        11
+    );
+
+    ctx.lineTo(
+        -8-walk,
+        27
+    );
+
+    ctx.moveTo(
+        6,
+        11
+    );
+
+    ctx.lineTo(
+        8+walk,
+        27
+    );
+
+    ctx.stroke();
+
+
+    /* VESTE */
+
+    ctx.fillStyle=
+        "#315e7c";
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        -13,
+        -8,
+        26,
+        28,
+        7
+    );
+
+    ctx.fill();
+
+
+    /* SAC */
+
+    ctx.fillStyle=
+        "#4d5c3f";
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+
+        player.facing>0
+        ?-19
+        :10,
+
+        -3,
+
+        10,
+        21,
+        4
+    );
+
+    ctx.fill();
+
+
+    /* BRAS */
+
+    ctx.strokeStyle=
+        "#d3ac85";
+
+    ctx.lineWidth=6;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -10,
+        0
+    );
+
+    ctx.lineTo(
+        -15,
+        -10
+    );
+
+    ctx.moveTo(
+        10,
+        0
+    );
+
+    ctx.lineTo(
+        16,
+        -9
+    );
+
+    ctx.stroke();
+
+
+    /* ARME */
+
+    ctx.save();
+
+    ctx.translate(
+
+        player.recoil>0
+        ?-player.facing*4
+        :0,
+
+        0
+    );
+
+
+    ctx.strokeStyle=
+        "#40372f";
+
+    ctx.lineWidth=5;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        10*
+        player.facing,
+        -10
+    );
+
+    ctx.lineTo(
+        31*
+        player.facing,
+        -14
+    );
+
+    ctx.stroke();
+
+
+    ctx.fillStyle=
+        "#242321";
+
+    ctx.fillRect(
+
+        player.facing>0
+        ?28
+        :-35,
+
+        -16,
+        8,
+        5
+    );
+
+
+    ctx.restore();
+
+
+    /* VISAGE */
+
+    ctx.fillStyle=
+        "#d8b28d";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        -17,
+        11,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* CHEVEUX */
+
+    ctx.fillStyle=
+        "#4b392b";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        -20,
+        11,
+        Math.PI,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* OEIL */
+
+    ctx.fillStyle=
+        "#2b2723";
+
+    ctx.fillRect(
+
+        player.facing>0
+        ?4
+        :-6,
+
+        -18,
+        2,
+        2
+    );
+
+
+    ctx.restore();
+}
+
+
+/* =========================
+   DESSIN
+========================= */
+
+function draw(){
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+    drawWorld();
+
+
+    enemies.forEach(
+        enemyDraw
+    );
+
+
+    /* BALLES */
+
+    for(
+        const b of bullets
+    ){
+
+        ctx.fillStyle=
+            b.crit
+            ?"#ffe36d"
+            :"#fff7d4";
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            b.x-
+            cam.x,
+
+            b.y-
+            cam.y,
+
+            b.r,
+
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+    }
+
+
+    /* DRONES */
+
+    for(
+        const o of orbs
+    ){
+
+        if(!o){
+            continue;
+        }
+
+        ctx.fillStyle=
+            "#d9a04c";
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+            o.x-
+            cam.x,
+
+            o.y-
+            cam.y,
+
+            8,
+
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+    }
+
+
+    /* PARTICULES */
+
+    for(
+        const p of particles
+    ){
+
+        ctx.globalAlpha=
+            Math.max(
+                0,
+                p.life*2
+            );
+
+
+        ctx.fillStyle=
+            p.type==="pulse"
+            ?"#ffd36d"
+            :"#fff";
+
+
+        ctx.fillRect(
+
+            p.x-
+            cam.x+
+            Math.cos(p.a)*
+            (1-p.life)*
+            35,
+
+            p.y-
+            cam.y+
+            Math.sin(p.a)*
+            (1-p.life)*
+            35,
+
+            4,
+            4
+        );
+
+
+        ctx.globalAlpha=1;
+    }
+
+
+    playerDraw();
+}
+
+
+/* =========================
+   BOUCLE DE JEU
+========================= */
 
 function loop(now){
-  const dt=
-    Math.min(
-      .033,
-      (now-last)/1000||0
+
+    const dt=
+        Math.min(
+
+            .033,
+
+            (
+                now-last
+            )/1000
+            ||0
+        );
+
+
+    last=now;
+
+
+    if(running){
+
+        update(dt);
+    }
+
+
+    if(player){
+
+        draw();
+    }
+
+
+    requestAnimationFrame(
+        loop
     );
-
-  last=now;
-
-  if(running){
-    update(dt);
-  }
-
-  if(player){
-    draw();
-  }
-
-  requestAnimationFrame(loop);
 }
 
-$("startBtn").onclick=()=>{
-  reset();
-  running=true;
-  last=performance.now();
 
-  $("start").classList.add("hidden");
-  $("hud").classList.remove("hidden");
-  $("joy").classList.remove("hidden");
-  $("pulse").classList.remove("hidden");
-  $("tip").classList.remove("hidden");
+/* =========================
+   LANCEMENT
+========================= */
 
-  setTimeout(
-    ()=>$("tip").classList.add("hidden"),
-    6500
-  );
+$("startBtn")
+.onclick=()=>{
+
+    reset();
+
+    running=true;
+
+    last=
+        performance.now();
+
+
+    $("start")
+    .classList
+    .add("hidden");
+
+
+    $("hud")
+    .classList
+    .remove("hidden");
+
+
+    $("joy")
+    .classList
+    .remove("hidden");
+
+
+    $("pulse")
+    .classList
+    .remove("hidden");
+
+
+    $("tip")
+    .classList
+    .remove("hidden");
+
+
+    setTimeout(
+
+        ()=>
+        $("tip")
+        .classList
+        .add("hidden"),
+
+        6500
+    );
 };
 
-requestAnimationFrame(loop);
+
+requestAnimationFrame(
+    loop
+);
+
 </script>
 
 </body>
